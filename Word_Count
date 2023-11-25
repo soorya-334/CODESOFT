@@ -1,0 +1,97 @@
+import java.io.*;
+import java.util.*;
+
+public class Word_Count 
+{
+    private static final Set<String> stopWords = new HashSet<>(Arrays.asList( "a", "an", "the", "of", "and", "to", "in", "for", "from", "on",
+            "at", "with", "by", "about", "as", "it", "is", "are", "was", "were","be", "been", "being", "have", "has", "had", "he", "she", "they",
+            "him", "her", "them", "this", "that", "these", "those", "who", "what","when", "where", "why", "how", ","));
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter 'file' to count words from a file, or enter text directly:");
+        String inpType = sc.nextLine();
+
+        if (inpType.equalsIgnoreCase("file")) {
+            countWordsFromFile(sc);
+        } 
+        else 
+        {
+            countWordsFromText(inpType);
+        }
+    }
+    private static void countWordsFromFile(Scanner sc)
+    {
+        System.out.println("Enter the file path:");
+        String f_Path = sc.nextLine();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(f_Path))) 
+        {
+            int totalWordCount = 0;
+            int uniqueWordCount = 0;
+            Map<String, Integer> wordFrequency = new HashMap<>();
+
+            String line;
+            while ((line = reader.readLine()) != null) 
+            {
+                String[] words = line.split("\\s+");
+                for (String word : words)
+                {
+                    word = word.toLowerCase();
+                    if (!stopWords.contains(word)) 
+                    {
+                        totalWordCount++;
+                        uniqueWordCount++;
+                        wordFrequency.putIfAbsent(word, 0);
+                        wordFrequency.put(word, wordFrequency.get(word) + 1);
+                    }
+                }
+            }
+
+            System.out.println("Total words in the file: " + totalWordCount);
+            System.out.println("Unique words in the file: " + uniqueWordCount);
+            System.out.print("Word frequency: ");
+            
+            for (Map.Entry<String, Integer> entry : wordFrequency.entrySet())
+            {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+        } catch (FileNotFoundException e)
+        {
+            System.out.println("Error: File not found");
+        } catch (IOException e) 
+        {
+            System.out.println("Error: Reading file failed");
+        }
+    }
+    private static void countWordsFromText(String inpType) 
+    {
+        String txt = inpType;
+
+        String[] words = txt.split("\\s+");
+        int totalWordCount = words.length;
+        int uniqueWordCount = 0;
+        Map<String, Integer> wordFrequency = new HashMap<>();
+
+        for (String word : words) 
+        {
+            word = word.toLowerCase();
+            if (!stopWords.contains(word))
+            {
+                uniqueWordCount++;
+                wordFrequency.putIfAbsent(word, 0);
+                wordFrequency.put(word, wordFrequency.get(word) + 1);
+            }
+        }
+
+        System.out.println("Total words in the text: " + totalWordCount);
+        System.out.println("Unique words in the text: " + uniqueWordCount);
+        System.out.print("Word frequency: ");
+        
+        for (Map.Entry<String, Integer> entry : wordFrequency.entrySet()) 
+        {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+}
