@@ -1,0 +1,76 @@
+import java.util.*;
+
+public class ATM_Machine 
+{
+    public static double account = 1000;
+    public static void main(String[] args) 
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        boolean exit = false;
+        System.out.println("Welcome!");
+        while (!exit)
+        {
+            System.out.println("Please select an option:");
+            System.out.println("1. Withdraw");
+            System.out.println("2. Deposit");
+            System.out.println("3. Check Balance");
+            System.out.println("4. Exit");
+
+            int choice = scanner.nextInt();
+
+            switch (choice) 
+            {
+                case 1:
+                    System.out.print("Enter withdrawal amount: ");
+                    double withdrawAmount = scanner.nextDouble();
+                    if (account >= 100) 
+                    {
+                        withdraw(withdrawAmount);
+                        System.out.println("Successfully withdrawn Rs." + withdrawAmount);
+                    }
+                    else 
+                    {
+                        System.out.println("Insufficient balance. Please enter a smaller amount.");
+                    }
+                    break; 
+
+                case 2:
+                    System.out.print("Enter deposit amount:");
+                    double depositAmount = scanner.nextDouble();
+                    
+                    deposit(depositAmount);
+                    System.out.println("Amount deposited in bank Rs.: "+ depositAmount);
+                    break;
+
+                case 3:
+                    System.out.println("Your Bank balance is Rs.: "+ checkBalance());
+                    break;
+
+                case 4:
+                    System.out.println("Thank you!");
+                    exit = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Please enter a valid option.");
+            }
+        }
+    }
+    
+    public static double withdraw(double a) 
+    {
+        account -= a;
+        return 0;
+    }
+    public static double deposit(double a) 
+    {
+        account += a;
+        return account;
+    }
+
+    public static double checkBalance()
+    {
+        return (double)account;
+    }
+}
